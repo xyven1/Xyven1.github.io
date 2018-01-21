@@ -92,12 +92,12 @@ function start() { //initiates a new game. resets time, score, question number, 
 	newquestion();
 	document.getElementById("input").style.display = 'block';
 }
-function precheck(ele) { //checks when enter is pressed when filing out the input
-	if(onkeydown.keyCode == 13) {
-		ans = ele.value;
+function precheck(element) { //checks when enter is pressed when filing out the input
+	if(element.keyCode == 13) {
+		ans = element.value;
 		check();
 		newquestion();
-		ele.value = "";
+		element.value = "";
 	}
 }
 function newquestion() {//creates a new question and keeps track of how many have passed, and thus when to finish the game
