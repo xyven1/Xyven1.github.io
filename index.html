@@ -93,7 +93,7 @@ function start() { //initiates a new game. resets time, score, question number, 
 	document.getElementById("input").style.display = 'block';
 }
 function precheck(element) { //checks when enter is pressed when filing out the input
-	if(element.keyCode == 13) {
+	if(event.keyCode == 13) {
 		ans = element.value;
 		check();
 		newquestion();
