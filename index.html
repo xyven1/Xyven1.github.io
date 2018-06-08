@@ -52,7 +52,7 @@
     }
 
     .w3-wide {
-      letter-spacing: 7px;
+      letter-spacing: 5px;
     }
 
     .w3-hover-opacity {
@@ -61,13 +61,13 @@
 
     /* Turn off parallax scrolling for tablets and phones */
 
-    @media only screen and (max-device-width: 1024px) {
+    /* @media only screen and (max-device-width: 1024px) {
       .bgimg-1,
       .bgimg-2,
       .bgimg-3 {
         background-attachment: scroll;
       }
-    }
+    } */
   </style>
 </head>
 
@@ -75,8 +75,8 @@
 <body>
   <!-- Navbar (sit on top) -->
   <div class="w3-top">
-    <div class="w3-bar w3-text-black" id="myNavbar">
-      <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-right" href="javascript:void(0);" onclick="toggleFunction()"
+    <div class="w3-bar w3-text-white" id="myNavbar">
+      <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-left" href="javascript:void(0);" onclick="toggleFunction()"
         title="Toggle Navigation Menu">
         <i class="fa fa-bars"></i>
       </a>
@@ -115,7 +115,7 @@
     <!-- Responsive Grid. Four columns on tablets, laptops and desktops. Will stack on mobile devices/small screens (100% width) -->
     <div class="w3-row-padding w3-center">
       <div class="w3-col">
-        <a href="https://xyven.xyz/mathgame" class="w3-hover-opacity">
+        <a href="https://xyven.xyz/mathgame" class="w3-hover-opacity w3-button w3-black">
           MATH GAME</a>
       </div>
     </div>
@@ -147,8 +147,8 @@
     <div class="w3-container w3-center w3-padding-large">
       <p>Welcome to my website. I am a student right now, and I am enjoying learning sciences and computer sciences. I currently
         know java fairly well, and I am beginning to learn python. I think that computer science is the most important field
-        in the forseeable furture, and I am really intersted to lean about AI's much more in depth. I am also the leader of
-        the cult "Nihilistic Existential Cynicists". I am currently working on a home page. Email me for further corespondance.
+        in the forseeable furture, and I am really intersted to lean about AI's much more in depth. I am also the leader
+        of the cult "Nihilistic Existential Cynicists". I am currently working on a home page. Email me for further corespondance.
       </p>
     </div>
     <p class="w3-large w3-center w3-padding-16">Things I'm maybe decent at:</p>
@@ -221,12 +221,13 @@
     window.onscroll = function () {
       updateNavType()
     };
+
     function updateNavType() {
       var navbar = document.getElementById("myNavbar");
       if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-        navbar.className = "w3-bar w3-text-black" + " w3-card" + " w3-animate-top" + " w3-white";
+        navbar.className = "w3-bar w3-text-black w3-card w3-animate-top w3-white";
       } else {
-        navbar.className = navbar.className.replace(" w3-card w3-animate-top w3-white", "");
+        navbar.className = navbar.className.replace("w3-text-black w3-card w3-animate-top w3-white", "w3-text-white");
       }
     }
 
