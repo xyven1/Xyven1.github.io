@@ -8,6 +8,38 @@
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script> //cookie handling
+    document.cookie = "";
+    var numNames = 0;
+    function getCookie(cname) {
+      var name = cname + "=";
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(';');
+      for(var i = 0; i <ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0) == ' ') {
+              c = c.substring(1);
+          }
+          if (c.indexOf(name) == 0) {
+              return c.substring(name.length, c.length);
+          }
+      }
+      return "";
+    }
+    function addCookie(cname, cvalue) {
+        document.cookie = "" + cname + "=" + cvalue + ";";
+    }
+    function precheck(element) {
+      if(event.keyCode == 13) {
+        addCookie(numNames, element.value);
+        numNames++;
+        element.value = "";
+      }
+    }
+    function genRanName(){
+      document.getElementById("nameLoc").innerHTML = getCookie(Math.floor(Math.random() * numNames));
+    }
+  </script>
   <style>
     body,
     h1,
@@ -207,6 +239,18 @@
           <i class="fa fa-paper-plane"></i> SEND MESSAGE
         </div>
       </a>
+    </div>
+  </div>
+
+   <!-- Container (Contact Section) -->
+   <div class="w3-content w3-container w3-padding-64 w3-section" id="rannamegen">
+    <h3 class="w3-center">RANDOM NAME GENERATOR</h3>
+    <div class="w3-center w3-padding-32">
+      <div class="w3-large w3-margin-bottom">
+        <input type="text" id="input" type="text" class="search" onkeydown="precheck(this)"/>
+      </div>
+      <button class="w3-button w3-black w3-center" onclick = "genRanName()">Random Name</button>
+      <p class="w3-center" id="nameLoc">Name</p>
     </div>
   </div>
 
