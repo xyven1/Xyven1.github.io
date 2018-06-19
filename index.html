@@ -25,8 +25,7 @@
           while (c.charAt(0) == ' ') {
               c = c.substring(1);
           }
-          console.log(c+ "success: " + c.split('=')[0]);
-          if(/^\\d+$/.test(""+c.split('=')[0])){
+          if(/^\d+$/.test(""+c.split('=')[0])){
             console.log("success: " + c.split('=')[0]);
             deleteCookie(""+c.split('=')[0]);
           }
