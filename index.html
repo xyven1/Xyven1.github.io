@@ -8,12 +8,25 @@
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script> //cookie handling
+  <script> 
+    function onloadFunction(){
+      clearCurrentCookies();
+    }
+    //cookie handling
     document.cookie = "";
     var numNames = 0;
     var possibleNames = [];
     var isListType = false;
-
+    function clearCurrentCookies(){
+      var decodedCookie = decodeURIComponent(document.cookie);
+      var ca = decodedCookie.split(';');
+      for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        if(/^\\d+$/.test(""+c)){
+          deleteCookie(""+c);
+        }
+      }
+    }
     function getCookie(cname) {
       var name = cname + "=";
       var decodedCookie = decodeURIComponent(document.cookie);
@@ -32,7 +45,7 @@
     function addCookie(cname, cvalue) {
       document.cookie = "" + cname + "=" + cvalue + ";";
       if(/^\\d+$/.test(""+cname)){
-        possibleNames.push(cname);
+        possibleNames.push(""+cname);
       }
     }
     function deleteCookie(cname) {
@@ -155,7 +168,7 @@
 </head>
 
 
-<body>
+<body onload="onloadFunction()">
   <!-- Navbar (sit on top) -->
   <div class="w3-top">
     <div class="w3-bar w3-text-white" id="myNavbar">
