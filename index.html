@@ -11,6 +11,9 @@
   <script> //cookie handling
     document.cookie = "";
     var numNames = 0;
+    var possibleNames = [];
+    var isListType = false;
+
     function getCookie(cname) {
       var name = cname + "=";
       var decodedCookie = decodeURIComponent(document.cookie);
@@ -27,17 +30,65 @@
       return "";
     }
     function addCookie(cname, cvalue) {
-        document.cookie = "" + cname + "=" + cvalue + ";";
+      document.cookie = "" + cname + "=" + cvalue + ";";
+      if(/^\\d+$/.test(cname)){
+        possibleNames.push(cname);
+      }
     }
+    function deleteCookie(cname) {
+      document.cookie = cname + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+      if(/^\\d+$/.test(cname)){
+        if(possibleNames.indexOf(cname)==-1){}else{
+          possibleNames.splice(index, possibleNames.indexOf(cname))
+        }
+      }
+    }
+
+    function resetPossibleNames(){
+      possibleNames = [];
+      for (var i = 0; i < numNames; i++) {
+        if(getCookie(""+i)!= ""){
+          possibleNames.push(i);
+        }
+      }
+    }
+    function clearNames(){
+      for (var i = 0; i < numNames; i++) {
+        deleteCookie(""+i);
+      }
+      numNames = 0;
+    }
+
+    function toggleType(){
+      if(!isListType){
+        listRandom();
+      }else{
+        trueRandom();
+      }
+    }
+    function trueRandom(){
+      resetPossibleNames();
+      isListType=false;
+    }
+    function listRandom(){
+      resetPossibleNames();
+      isListType=true;
+    }
+
+    function genRanName(){
+      var ranPos = Math.floor(Math.random()*possibleNames.length);
+      document.getElementById("nameLoc").innerHTML = getCookie(""+possibleNames[ranPos]);
+      if(isListType){
+        possibleNames.splice(index, ranPos);
+      }
+    }
+
     function precheck(element) {
       if(event.keyCode == 13) {
         addCookie(numNames, element.value);
         numNames++;
         element.value = "";
       }
-    }
-    function genRanName(){
-      document.getElementById("nameLoc").innerHTML = getCookie(Math.floor(Math.random() * numNames));
     }
   </script>
   <style>
@@ -180,7 +231,7 @@
       <p>Welcome to my website. I am a student right now, and I am enjoying learning sciences and computer sciences. I currently
         know java fairly well, and I am beginning to learn python. I think that computer science is the most important field
         in the forseeable furture, and I am really intersted to lean about AI's much more in depth. I am also the leader
-        of the cult "Nihilistic Existential Cynicists". I am currently working on a home page. Email me for further corespondance.
+        of the cult "Apathetic Nihilistic Existential Cynicists". I am currently working on a home page. Email me for further corespondance.
       </p>
     </div>
     <p class="w3-large w3-center w3-padding-16">Things I'm maybe decent at:</p>
@@ -226,6 +277,32 @@
     </div>
   </div>
 
+   <!-- Container (Contact Section) -->
+   <div class="w3-content w3-container w3-padding-64 w3-section" id="rannamegen">
+    <h3 class="w3-center">RANDOM NAME GENERATOR</h3>
+    <div class="w3-padding w3-third">
+      <p class = "">
+        Add names one at a time in the text box. When you hit random, it will be a "truly" random name. Click the button to make it go through each name once, randomly, before resetting.
+      </p>
+      <button onclick="toggleType" class="w3-button w3-padding-small w3-black w3-center">Switch Type</button>
+    </div>
+    <div class="w3-padding w3-third">
+      <div class="w3-center w3-large w3-margin-bottom">
+        <input type="text" onkeydown="precheck(this)" placeholder="Enter Random Names"/>
+      </div>
+      <div class="w3-center">
+        <button class="w3-button w3-padding-small w3-black w3-center" onclick = "genRanName()">Random Name</button>
+        <button class="w3-button w3-padding-small w3-black w3-center" onclick = "clearNames()">Clear Names</button>
+        <p class="w3-center w3-large" id="nameLoc">name</p>
+      </div>
+    </div>
+    <div class="w3-third w3-padding">
+        <p class="w3-wide">
+          
+        </p>
+    </div>
+  </div>
+
   <!-- Container (Contact Section) -->
   <div class="w3-content w3-container w3-padding-64 w3-section" id="contact">
     <h3 class="w3-center">CONTACT</h3>
@@ -239,18 +316,6 @@
           <i class="fa fa-paper-plane"></i> SEND MESSAGE
         </div>
       </a>
-    </div>
-  </div>
-
-   <!-- Container (Contact Section) -->
-   <div class="w3-content w3-container w3-padding-64 w3-section" id="rannamegen">
-    <h3 class="w3-center">RANDOM NAME GENERATOR</h3>
-    <div class="w3-center w3-padding-32">
-      <div class="w3-large w3-margin-bottom">
-        <input type="text" id="input" type="text" class="search" onkeydown="precheck(this)"/>
-      </div>
-      <button class="w3-button w3-black w3-center" onclick = "genRanName()">Random Name</button>
-      <p class="w3-center" id="nameLoc">Name</p>
     </div>
   </div>
 
