@@ -14,10 +14,14 @@
     }
     //cookie handling
     document.cookie = "";
-    var numNames = 0;
+    if(getCookie("numNames")!="")
+      var numNames = getCookie("numNames");
+    else
+      var numNames=0;
     var names = [];
     var possibleNames = [];
     var isListType = false;
+    addCookie("numNames", numNames);
     function clearCurrentCookies(){
       var decodedCookie = decodeURIComponent(document.cookie);
       var ca = decodedCookie.split(';');
@@ -53,6 +57,9 @@
         possibleNames.push(""+cname);
       }
     }
+    function setCookies(cname, cvalue){
+      document.cookie = "" + cname + "=" + cvalue + ";";
+    }
     function deleteCookie(cname) {
       document.cookie = cname + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
       if(/^\d+$/.test(cname)){
@@ -76,6 +83,7 @@
         deleteCookie(""+i);
       }
       numNames = 0;
+      setCookies("numNames", "0");
     }
 
     function toggleType(){
@@ -113,6 +121,7 @@
       if(event.keyCode == 13) {
         addCookie(numNames, element.value);
         numNames++;
+        setCookies("numNames", numNames);
         element.value = "";
       }
     }
