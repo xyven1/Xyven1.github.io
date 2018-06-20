@@ -8,121 +8,157 @@
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script> 
-    function onloadFunction(){
+  <script>
+    function onloadFunction() {
       resetPossibleNames();
+      document.getElementById("fileinput").addEventListener('change', readSingleFile, false);
     }
     //cookie handling
     document.cookie = "";
-    if(getCookie("numNames")!="")
+    if (getCookie("numNames") != "")
       var numNames = getCookie("numNames");
     else
-      var numNames=0;
-    var names = [];
+      var numNames = 0;
+    var namesList = [];
     var possibleNames = [];
     var isListType = false;
     addCookie("numNames", numNames);
-    function clearCurrentCookies(){
+
+    function clearCurrentCookies() {
       var decodedCookie = decodeURIComponent(document.cookie);
       var ca = decodedCookie.split(';');
-      for(var i = 0; i <ca.length; i++) {
-          var c = ca[i];
-          while (c.charAt(0) == ' ') {
-              c = c.substring(1);
-          }
-          if(/^\d+$/.test(""+c.split('=')[0])){
-            deleteCookie(""+c.split('=')[0]);
-          }
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
         }
+        if (/^\d+$/.test("" + c.split('=')[0])) {
+          deleteCookie("" + c.split('=')[0]);
+        }
+      }
       return "";
     }
+
     function getCookie(cname) {
       var name = cname + "=";
       var decodedCookie = decodeURIComponent(document.cookie);
       var ca = decodedCookie.split(';');
-      for(var i = 0; i <ca.length; i++) {
-          var c = ca[i];
-          while (c.charAt(0) == ' ') {
-              c = c.substring(1);
-          }
-          if (c.indexOf(name) == 0) {
-              return c.substring(name.length, c.length);
-          }
+      for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+          c = c.substring(1);
         }
+        if (c.indexOf(name) == 0) {
+          return c.substring(name.length, c.length);
+        }
+      }
       return "";
     }
+
     function addCookie(cname, cvalue) {
       document.cookie = "" + cname + "=" + cvalue + ";";
-      if(/^\d+$/.test(""+cname)){
-        possibleNames.push(""+cname);
+      if (/^\d+$/.test("" + cname)) {
+        possibleNames.push("" + cname);
       }
     }
-    function setCookies(cname, cvalue){
+
+    function setCookies(cname, cvalue) {
       document.cookie = "" + cname + "=" + cvalue + ";";
     }
+
     function deleteCookie(cname) {
       document.cookie = cname + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      if(/^\d+$/.test(cname)){
-        if(possibleNames.indexOf(cname)==-1){}else{
+      if (/^\d+$/.test(cname)) {
+        if (possibleNames.indexOf(cname) == -1) {} else {
           possibleNames.splice(possibleNames.indexOf(cname), 1)
         }
       }
     }
 
-    function resetPossibleNames(){
+    function resetPossibleNames() {
       possibleNames = [];
       for (var i = 0; i < numNames; i++) {
-        if(getCookie(""+i)!= ""){
+        if (getCookie("" + i) != "") {
           possibleNames.push(i);
         }
       }
     }
-    function clearNames(){
-      possibleNames=[];
+
+    function clearNames() {
+      possibleNames = [];
       for (var i = 0; i < numNames; i++) {
-        deleteCookie(""+i);
+        deleteCookie("" + i);
       }
       numNames = 0;
       setCookies("numNames", "0");
+      document.getElementById("name")
     }
 
-    function toggleType(){
-      if(!isListType){
+    function toggleType() {
+      if (!isListType) {
         listRandom();
-      }else{
+      } else {
         trueRandom();
       }
     }
-    function trueRandom(){
+
+    function trueRandom() {
       resetPossibleNames();
-      isListType=false;
+      isListType = false;
       document.getElementById("mode").innerHTML = "Fully Random";
     }
-    function listRandom(){
+
+    function listRandom() {
       resetPossibleNames();
-      isListType=true;
+      isListType = true;
       document.getElementById("mode").innerHTML = "Random Order";
     }
 
-    function genRanName(){
-      if(possibleNames.length==0){
+    function genRanName() {
+      if (possibleNames.length == 0) {
         resetPossibleNames();
-      }if(possibleNames.length==0){
+      }
+      if (possibleNames.length == 0) {
         return;
       }
-      var ranPos = Math.floor(Math.random()*possibleNames.length);
-      document.getElementById("nameLoc").innerHTML = getCookie(""+possibleNames[ranPos]);
-      if(isListType){
+      var ranPos = Math.floor(Math.random() * possibleNames.length);
+      document.getElementById("name").innerHTML = getCookie("" + possibleNames[ranPos]);
+      if (isListType) {
         possibleNames.splice(ranPos, 1);
       }
     }
 
     function precheck(element) {
-      if(event.keyCode == 13) {
+      if (event.keyCode == 13) {
         addCookie(numNames, element.value);
         numNames++;
         setCookies("numNames", numNames);
         element.value = "";
+      }
+    }
+    
+    function fileToCookies(){
+      clearCurrentCookies();
+      for (let i   = 0; i < namesList.length; i++) {
+        addCookie(""+i,""+namesList[i])
+      }
+    }
+    function readSingleFile(evt) {
+      if (window.File && window.FileReader && window.FileList && window.Blob) {
+        var f = evt.target.files[0];
+        if (f) {
+          var r = new FileReader();
+          r.onload = function (e) {
+            var contents = e.target.result;
+            namesList = contents.split('\n');
+            fileToCookies();
+          }
+          r.readAsText(f);
+        } else{
+          alert("Failed to load file");
+          }
+      } else{
+        alert('The File APIs are not fully supported by your browser.');
       }
     }
   </script>
@@ -205,7 +241,7 @@
         <i class="fa fa-th"></i> ABOUT</a>
       <a href="#contact" class="w3-bar-item w3-button w3-hide-small">
         <i class="fa fa-envelope"></i> CONTACT</a>
-      <a href="https://github.com/XyvenQ/" target="_blank" class="w3-bar-item w3-button w3-hide-small">
+      <a href="https://github.com/XyvenQ/" class="w3-bar-item w3-button w3-hide-small">
         <i class="fa fa-github"></i> GITHUB</a>
     </div>
 
@@ -266,7 +302,8 @@
       <p>Welcome to my website. I am a student right now, and I am enjoying learning sciences and computer sciences. I currently
         know java fairly well, and I am beginning to learn python. I think that computer science is the most important field
         in the forseeable furture, and I am really intersted to lean about AI's much more in depth. I am also the leader
-        of the cult "Apathetic Nihilistic Existential Cynicists". I am currently working on a home page. Email me for further corespondance.
+        of the cult "Apathetic Nihilistic Existential Cynicists". I am currently working on a home page. Email me for further
+        corespondance.
       </p>
     </div>
     <p class="w3-large w3-center w3-padding-16">Things I'm maybe decent at:</p>
@@ -312,42 +349,37 @@
     </div>
   </div>
 
-   <!-- Container (Contact Section) -->
-   <div class="w3-content w3-container w3-padding-64 w3-section" id="rannamegen">
+  <!-- Container (Contact Section) -->
+  <div class="w3-content w3-container w3-padding-64 w3-section" id="rannamegen">
     <h3 class="w3-center">RANDOM NAME GENERATOR</h3>
     <div class="w3-padding w3-third">
       <p>
-        Add names one at a time in the text box. When you hit random, it will be a "truly" random name. Click the button to make it go through each name once, randomly, before resetting.
+        Add names one at a time in the text box. When you hit random, it will be a "truly" random name. Click the button to make
+        it go through each name once, randomly, before resetting.
       </p>
       <button onclick="toggleType()" class="w3-button w3-padding-small w3-black w3-center">Switch Mode</button>
-      <p id = "mode">
-
+      <p id="mode">
+        Truly Random
       </p>
     </div>
     <div class="w3-padding w3-third">
       <div class="w3-center w3-large w3-margin-bottom">
-        <input type="text" onkeydown="precheck(this)" placeholder="Enter Random Names"/>
+        <input type="text" onkeydown="precheck(this)" placeholder="Enter Random Names" />
       </div>
       <div class="w3-center">
-        <button class="w3-button w3-padding-small w3-black w3-center" onclick = "genRanName()">Random Name</button>
-        <button class="w3-button w3-padding-small w3-black w3-center" onclick = "clearNames()">Clear Names</button>
-        <p class="w3-center w3-large" id="nameLoc">name</p>
+        <button class="w3-button w3-padding-small w3-black w3-center" onclick="genRanName()">Random Name</button>
+        <button class="w3-button w3-padding-small w3-black w3-center" onclick="clearNames()">Clear Names</button>
+        <p class="w3-center w3-large w3" id="name"></p>
       </div>
     </div>
     <div class="w3-third w3-padding">
       <h4>
-          Upload from File:
+        Upload from File:
       </h4>
-      <form method="post" enctype="multipart/form-data">
-        <div>
-          <label for="profile_pic">Choose file to upload</label>
-          <input type="file" id="profile_pic" name="profile_pic"
-                accept=".jpg, .jpeg, .png">
-        </div>
-        <div>
-          <button>Submit</button>
-        </div>
-      </form>
+      <input type="file" id="fileinput" accept=".txt"/>
+      <p>
+        The file will be seperated by line. Each line will considered one name. Only input one file at a time.
+      </p>
     </div>
   </div>
 
