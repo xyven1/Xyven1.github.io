@@ -105,7 +105,7 @@
       var ranPos = Math.floor(Math.random()*possibleNames.length);
       document.getElementById("nameLoc").innerHTML = getCookie(""+possibleNames[ranPos]);
       if(isListType){
-        possibleNames.splice(index, ranPos);
+        possibleNames.splice(ranPos, 1);
       }
     }
 
