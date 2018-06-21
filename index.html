@@ -8,163 +8,6 @@
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script>
-    function onloadFunction() {
-      resetPossibleNames();
-      document.getElementById("fileinput").addEventListener('change', readSingleFile, false);
-    }
-    //cookie handling
-    document.cookie = "";
-    if (getCookie("numNames") != "")
-      var numNames = getCookie("numNames");
-    else{
-      var numNames = 0;
-      addCookie("numNames", numNames);
-    }
-    var namesList = [];
-    var possibleNames = [];
-    var isListType = false;
-    function clearCurrentCookies() {
-      var decodedCookie = decodeURIComponent(document.cookie);
-      var ca = decodedCookie.split(';');
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-          c = c.substring(1);
-        }
-        if (/^\d+$/.test("" + c.split('=')[0])) {
-          deleteCookie("" + c.split('=')[0]);
-        }
-      }
-      return "";
-    }
-
-    function getCookie(cname) {
-      var name = cname + "=";
-      var decodedCookie = decodeURIComponent(document.cookie);
-      var ca = decodedCookie.split(';');
-      for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-          c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-          return c.substring(name.length, c.length);
-        }
-      }
-      return "";
-    }
-
-    function addCookie(cname, cvalue) {
-      document.cookie = "" + cname + "=" + cvalue + ";";
-      if (/^\d+$/.test("" + cname)) {
-        possibleNames.push("" + cname);
-      }
-    }
-
-    function setCookies(cname, cvalue) {
-      document.cookie = "" + cname + "=" + cvalue + ";";
-    }
-
-    function deleteCookie(cname) {
-      document.cookie = cname + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-      if (/^\d+$/.test(cname)) {
-        if (possibleNames.indexOf(cname) == -1) {} else {
-          possibleNames.splice(possibleNames.indexOf(cname), 1)
-        }
-      }
-    }
-
-    function resetPossibleNames() {
-      possibleNames = [];
-      for (var i = 0; i < numNames; i++) {
-        if (getCookie("" + i) != "") {
-          possibleNames.push(i);
-        }
-      }
-    }
-
-    function clearNames() {
-      possibleNames = [];
-      for (var i = 0; i < numNames; i++) {
-        deleteCookie("" + i);
-      }
-      numNames = 0;
-      setCookies("numNames", "0");
-      document.getElementById("name").innerHTML = "";
-    }
-
-    function toggleType() {
-      if (!isListType) {
-        listRandom();
-      } else {
-        trueRandom();
-      }
-    }
-
-    function trueRandom() {
-      resetPossibleNames();
-      isListType = false;
-      document.getElementById("mode").innerHTML = "Fully Random";
-    }
-
-    function listRandom() {
-      resetPossibleNames();
-      isListType = true;
-      document.getElementById("mode").innerHTML = "Random Order";
-    }
-
-    function genRanName() {
-      if (possibleNames.length == 0) {
-        resetPossibleNames();
-      }
-      if (possibleNames.length == 0) {
-        return;
-      }
-      var ranPos = Math.floor(Math.random() * possibleNames.length);
-      document.getElementById("name").innerHTML = getCookie("" + possibleNames[ranPos]);
-      if (isListType) {
-        possibleNames.splice(ranPos, 1);
-      }
-    }
-
-    function precheck(element) {
-      if (event.keyCode == 13) {
-        addCookie(numNames, element.value);
-        numNames++;
-        setCookies("numNames", numNames);
-        element.value = "";
-      }
-    }
-    
-    async function fileToCookies(){
-      clearCurrentCookies();
-      for (let i   = 0; i < namesList.length; i++) {
-        addCookie(""+i,""+namesList[i])
-        console.log(""+i,""+namesList[i]);
-      }
-      numNames=namesList.length;
-      setCookies("numNames", namesList.length);
-    }
-    async function readSingleFile(evt) {
-      if (window.File && window.FileReader && window.FileList && window.Blob) {
-        var f = evt.target.files[0];
-        if (f) {
-          var r = new FileReader();
-          r.onload = function (e) {
-            var contents = e.target.result;
-            namesList = contents.split('\n');
-            fileToCookies();
-          }
-          r.readAsText(f);
-        } else{
-          alert("Failed to load file");
-          }
-      } else{
-        alert('The File APIs are not fully supported by your browser.');
-      }
-    }
-  </script>
   <style>
     body,
     h1,
@@ -197,14 +40,14 @@
     /* First image (Logo. Full height) */
 
     .bgimg-1 {
-      background-image: url('/resources/aurora.jpg');
+      background-image: url('./resources/aurora.jpg');
       min-height: 100%;
     }
 
     /* Second image (Portfolio) */
 
     .bgimg-2 {
-      background-image: url("/resources/full_profile.jpg");
+      background-image: url("./resources/full_profile.jpg");
       min-height: 400px;
     }
 
@@ -230,14 +73,14 @@
 
 
 <body onload="onloadFunction()">
-  <!-- Navbar (sit on top) -->
   <div class="w3-top">
     <div class="w3-bar w3-text-white" id="myNavbar">
       <a class="w3-bar-item w3-button w3-hover-black w3-hide-medium w3-hide-large w3-left" href="javascript:void(0);" onclick="toggleFunction()"
         title="Toggle Navigation Menu">
         <i class="fa fa-bars"></i>
       </a>
-      <a href="#home" class="w3-bar-item w3-button">HOME</a>
+      <a href="#home" class="w3-bar-item w3-button">
+        <i class="fa fa-home"></i> HOME</a>
       <a href="#websites" class="w3-bar-item w3-button w3-hide-small">
         <i class="fa fa-user"></i> WEBSITES</a>
       <a href="#about" class="w3-bar-item w3-button w3-hide-small">
@@ -270,11 +113,15 @@
     <br>
 
     <!-- Responsive Grid. Four columns on tablets, laptops and desktops. Will stack on mobile devices/small screens (100% width) -->
-    <div class="w3-row-padding w3-center">
-      <div class="w3-col">
+    <div class="w3-center">
+      <span class= "w3-center w3-padding-small">
         <a href="https://xyven.xyz/mathgame" class="w3-hover-opacity w3-button w3-black">
-          MATH GAME</a>
-      </div>
+          Math Game</a>
+      </span>
+      <span class="w3-center w3-padding-small">
+        <a href="https://xyven.xyz/randomnamegenerator" class="w3-hover-opacity w3-button w3-black">
+          Random Name Generator</a>
+      </span>
     </div>
   </div>
 
@@ -349,40 +196,6 @@
     <div class="w3-quarter w3-section">
       <span class="w3-xlarge">9000+</span>
       <br> IQ
-    </div>
-  </div>
-
-  <!-- Container (Contact Section) -->
-  <div class="w3-content w3-container w3-padding-64 w3-section" id="rannamegen">
-    <h3 class="w3-center">RANDOM NAME GENERATOR</h3>
-    <div class="w3-padding w3-third">
-      <p>
-        Add names one at a time in the text box. When you hit random, it will be a "truly" random name. Click the button to make
-        it go through each name once, randomly, before resetting.
-      </p>
-      <button onclick="toggleType()" class="w3-button w3-padding-small w3-black w3-center">Switch Mode</button>
-      <p id="mode">
-        Truly Random
-      </p>
-    </div>
-    <div class="w3-padding w3-third">
-      <div class="w3-center w3-large w3-margin-bottom">
-        <input type="text" onkeydown="precheck(this)" placeholder="Enter Random Names" />
-      </div>
-      <div class="w3-center">
-        <button class="w3-button w3-padding-small w3-black w3-center" onclick="genRanName()">Random Name</button>
-        <button class="w3-button w3-padding-small w3-black w3-center" onclick="clearNames()">Clear Names</button>
-        <p class="w3-center w3-large w3" id="name"></p>
-      </div>
-    </div>
-    <div class="w3-third w3-padding">
-      <h4>
-        Upload from File:
-      </h4>
-      <input type="file" id="fileinput" accept=".txt"/>
-      <p>
-        The file will be seperated by line. Each line will considered one name. Only input one file at a time.
-      </p>
     </div>
   </div>
 
