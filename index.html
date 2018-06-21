@@ -137,15 +137,16 @@
       }
     }
     
-    function fileToCookies(){
+    async function fileToCookies(){
       clearCurrentCookies();
       for (let i   = 0; i < namesList.length; i++) {
         addCookie(""+i,""+namesList[i])
+        console.log(""+i,""+namesList[i]);
       }
       numNames=namesList.length;
       setCookies("numNames", namesList.length);
     }
-    function readSingleFile(evt) {
+    async function readSingleFile(evt) {
       if (window.File && window.FileReader && window.FileList && window.Blob) {
         var f = evt.target.files[0];
         if (f) {
