@@ -17,13 +17,13 @@
     document.cookie = "";
     if (getCookie("numNames") != "")
       var numNames = getCookie("numNames");
-    else
+    else{
       var numNames = 0;
+      addCookie("numNames", numNames);
+    }
     var namesList = [];
     var possibleNames = [];
     var isListType = false;
-    addCookie("numNames", numNames);
-
     function clearCurrentCookies() {
       var decodedCookie = decodeURIComponent(document.cookie);
       var ca = decodedCookie.split(';');
@@ -91,7 +91,7 @@
       }
       numNames = 0;
       setCookies("numNames", "0");
-      document.getElementById("name")
+      document.getElementById("name").innerHTML = "";
     }
 
     function toggleType() {
@@ -142,6 +142,8 @@
       for (let i   = 0; i < namesList.length; i++) {
         addCookie(""+i,""+namesList[i])
       }
+      numNames=namesList.length;
+      setCookies("numNames", namesList.length);
     }
     function readSingleFile(evt) {
       if (window.File && window.FileReader && window.FileList && window.Blob) {
